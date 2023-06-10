@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
     stages {
@@ -9,22 +8,25 @@ pipeline {
         }
          stage('Build Image') {
             steps {
-              sh 'docker build -t ubuntu_jenkins .'
+              bat 'docker build -t node00 -f Dockerfile  .'
             }
         }
          stage('Tag Image') {
-           
             steps {
-               sh 'docker tag ubuntu_jenkins:latest hasee658/ubuntu_jenkins:latest'
+               bat 'docker tag node00 hasee658/node00'
+            }
+         }
+        stage('Push Image') {
+            steps {
+               bat 'docker login -u hasee658 -p Nasha@786'
+                bat 'docker push hasee658/node00'
             }
         }
-         stage('Push Image') {
-          
+        stage ('Run Image') {
             steps {
-               sh 'docker login -u hasee658 -p Nasha@786#'
-                sh 'docker push hasee658/ubuntu_jenkins:latest'
-            }
-        }
+            bat 'docker run --name Conm -p 7778:3070 -d  node001'
+          } 
+      }
     }
     post { 
         aborted { 
@@ -41,4 +43,5 @@ pipeline {
         }
     }
     
-}
+} 
+
